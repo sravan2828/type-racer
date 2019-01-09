@@ -52,13 +52,15 @@ export default class TypeRace extends Component {
 
     handleKeyDown = (e) => {
         if (e.keyCode === 8) {
-            let {pendingText, errorText} = this.state;
+            let {pendingText, errorText, inputText} = this.state;
             let currentChar = errorText.pop();
+            inputText = inputText.slice(0, -1);
             pendingText.unshift(currentChar);
             this.setState({
                 pendingText,
                 errorText,
-                currentChar
+                currentChar,
+                inputText
             })
         }
     }

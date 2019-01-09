@@ -30,3 +30,16 @@
     transform: rotate(360deg);
   }
 }
+
+.completed{
+  color: green;
+  font-size: 2em;
+}
+.error{
+  color: red;
+  font-size: 2em;
+}
+.pending{
+  color: grey;
+  font-size: 2em
+}

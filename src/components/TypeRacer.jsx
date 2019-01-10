@@ -7,7 +7,11 @@ export default class TypeRace extends Component {
         errorText: [],
         pendingText: this.props.text.split(""),
         totalText: this.props.text,
-        inputText: ""
+        inputText: "",
+        showStartButton: true,
+        showStopButton: false,
+        seconds: 0,
+        timerOn: false
         
     }
 
@@ -48,6 +52,9 @@ export default class TypeRace extends Component {
                 inputText
             });
         }
+        if(pendingText.length === 0){
+            this.stopTimer();
+        }
     }
 
     handleKeyDown = (e) => {
@@ -64,8 +71,39 @@ export default class TypeRace extends Component {
             })
         }
     }
+
+    startTimer = () => {
+        this.setState({
+            showStartButton: false,
+            showStopButton: true,
+            seconds: 0,
+            completedText: []
+        })
+        this.timer = setInterval(() => {
+                let seconds = this.state.seconds
+                this.setState({ seconds: ++seconds });
+        }, 1000)
+    }
+    
+
+
+    stopTimer = () => {
+        this.setState({
+            showStartButton: true,
+            showStopButton: false
+        })
+        clearInterval(this.timer);
+        alert("your words/minute speed is "+ this.getWPM().toPrecision(2));
+    }
+
+    getWPM = () => {
+        const {completedText, seconds} = this.state;
+        if(seconds<=1){
+            return 0;
+        }
+        return (completedText.length/5)/(seconds/60);
+    }
     render(){
-        //console.log("completed Text : "+this.state.completedText+ " pending Text : "+ this.state.pendingText)
         return(
             <Fragment>
                 <div>
@@ -73,7 +111,11 @@ export default class TypeRace extends Component {
                     <span className="error">{this.state.errorText.join("")}</span>
                     <span className="pending">{this.state.pendingText.join("")}</span>
                 </div>
-                <input type="text" onKeyPress={this.handleKeyPress} onKeyDown={this.handleKeyDown} value = {this.state.inputText} />
+                <input type="text" className="input" onKeyPress={this.handleKeyPress} onKeyDown={this.handleKeyDown} value = {this.state.inputText} />
+                <p>time: {this.state.seconds}</p>
+                <p>words per minute: {this.getWPM().toPrecision(2)}</p>
+                <button className="button" onClick={this.startTimer} disabled={!this.state.showStartButton}>Start Timer</button>
+                <button className="button" onClick={this.stopTimer} disabled={!this.state.showStopButton}>Stop Timer</button>
             </Fragment>
         );
     }

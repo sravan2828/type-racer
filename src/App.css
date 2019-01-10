@@ -43,3 +43,11 @@
   color: grey;
   font-size: 2em
 }
+.input{
+  height:50px;
+  font-size:2em;
+}
+.button{
+  height: 55px;
+  font-size: 2em;
+}
